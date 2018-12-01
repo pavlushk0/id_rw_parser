@@ -38,7 +38,7 @@ string parse_str(const string &str) {
 	string rw_args;
 	vector<string> sints; 
 	vector<int> ints;
-	int npos = 0, i = 0;
+	int npos = 0;
 
 	npos = str.find("id_rw");
 
@@ -46,15 +46,13 @@ string parse_str(const string &str) {
 		return str;
 	}
 
-	lstr.erase(npos, 5);
-
-	rw_args = lstr.substr(npos, 9);
+	rw_args = lstr.substr(npos+5, 9);
 
 	for (auto &c: rw_args) {
 		if ((c == '(') || (c == ')') || (c == ',')) {
-			rw_args.erase(i,1);
+			//&c - &rw_args[0] - индекс итерируемого элемента
+			rw_args.erase(&c - &rw_args[0],1);
 		} 
-		i++;
 	}
 
 	sints = split_str(rw_args, ' ');
@@ -63,7 +61,7 @@ string parse_str(const string &str) {
 		ints.push_back(std::stoi(i));
 	}
 	
-	lstr.erase(npos, 9);
+	lstr.erase(npos, 14);
 
 	lstr.insert(npos, std::to_string(id_rw(ints[0], ints[1], ints[2])));
 
